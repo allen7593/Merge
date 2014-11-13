@@ -45,16 +45,21 @@ picGen::picGen()
             for(int j=0;j<height;j++)
                 secret->setPixel(i,j,white);
 
+        QImage* trans=new QImage(width*6,height*6,QImage::Format_RGBA8888);
+        for(int i=0;i<width*6;i++)
+            for(int j=0;j<height*6;j++)
+                trans->setPixel(i,j,white);
+        trans->save("trans.png");
         //write words on the pic
         secretStr=generateRanStr();
         QPainter painter;
         QFont font;
-        font.setPixelSize(15);
+        font.setPixelSize(17);
         //font.setBold(true);
         font.setStyleHint(QFont::TypeWriter);
         painter.begin(secret);
         painter.setFont(font);
-        painter.drawText(0,15,secretStr.c_str());
+        painter.drawText(0,25,secretStr.c_str());
         painter.end();
 
 }
@@ -279,7 +284,7 @@ void picGen::saveAll()
 
 void picGen::alignment()
 {
-    int size=9;
+    int size=11;
     picAli = new QImage(width*6+size*2,height*6+size*2,QImage::Format_RGBA8888);
     QRgb green,white;
     green = qRgba(0,255,0,255);
@@ -293,25 +298,35 @@ void picGen::alignment()
             picAli->setPixel(i,j,s2Ex->pixel(i-(size-1),j-(size-1)));
 
 
-    //top left corner
-    for(int i=0;i<size*2;i++)
-        for(int j=0;j<size*2;j++)
-            picAli->setPixel(i,j,green);
+     QPainter painter;
+     painter.begin(picAli);
+     painter.setPen(QPen(Qt::white,0,Qt::SolidLine));
+     painter.setBrush(QBrush(Qt::green,Qt::SolidPattern));
+     painter.drawEllipse(0,0,size*2,size*2);
+     painter.drawEllipse(width*6-1,0,size*2,size*2);
+     painter.drawEllipse(0,height*6-1,size*2,size*2);
+     painter.drawEllipse(width*6-1,height*6-1,size*2,size*2);
+     painter.end();
 
-    //top Right corner
-    for(int i=width*6-1;i<width*6+size*2-1;i++)
-        for(int j=0;j<size*2;j++)
-                picAli->setPixel(i,j,green);
+//    //top left corner
+//    for(int i=0;i<size*2;i++)
+//        for(int j=0;j<size*2;j++)
+//            picAli->setPixel(i,j,green);
 
-    //bot left corner
-    for(int i=0;i<size*2;i++)
-        for(int j=height*6-1;j<height*6+size*2-1;j++)
-            picAli->setPixel(i,j,green);
+//    //top Right corner
+//    for(int i=width*6-1;i<width*6+size*2-1;i++)
+//        for(int j=0;j<size*2;j++)
+//                picAli->setPixel(i,j,green);
 
-    //bot right corner
-    for(int i=width*6-1;i<width*6+size*2-1;i++)
-        for(int j=height*6-1;j<height*6+size*2-1;j++)
-            picAli->setPixel(i,j,green);
+//    //bot left corner
+//    for(int i=0;i<size*2;i++)
+//        for(int j=height*6-1;j<height*6+size*2-1;j++)
+//            picAli->setPixel(i,j,green);
+
+//    //bot right corner
+//    for(int i=width*6-1;i<width*6+size*2-1;i++)
+//        for(int j=height*6-1;j<height*6+size*2-1;j++)
+//            picAli->setPixel(i,j,green);
 
     QSize s(1000,500);
     *picAli=picAli->scaled(s,Qt::KeepAspectRatio,Qt::FastTransformation);

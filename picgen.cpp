@@ -295,41 +295,57 @@ void picGen::alignment()
             picAli->setPixel(i,j,white);
     for(int i=size-1;i<width*6+size-1;i++)
         for(int j=size-1;j<height*6+size-1;j++)
-            picAli->setPixel(i,j,s2Ex->pixel(i-(size-1),j-(size-1)));
+        {
+            if(i-(size-1)==0 && j-(size-1)==0)
+            {
+                picAli->setPixel(i,j,black);
+            }
+            else
+                picAli->setPixel(i,j,s2Ex->pixel(i-(size-1),j-(size-1)));
+        }
 
 
-     QPainter painter;
-     painter.begin(picAli);
-     painter.setPen(QPen(Qt::white,0,Qt::SolidLine));
-     painter.setBrush(QBrush(Qt::green,Qt::SolidPattern));
-     painter.drawEllipse(0,0,size*2,size*2);
-     painter.drawEllipse(width*6-1,0,size*2,size*2);
-     painter.drawEllipse(0,height*6-1,size*2,size*2);
-     painter.drawEllipse(width*6-1,height*6-1,size*2,size*2);
-     painter.end();
 
-//    //top left corner
-//    for(int i=0;i<size*2;i++)
-//        for(int j=0;j<size*2;j++)
-//            picAli->setPixel(i,j,green);
+//     QPainter painter;
+//     painter.begin(picAli);
+//     painter.setPen(QPen(Qt::white,0,Qt::SolidLine));
+//     painter.setBrush(QBrush(Qt::green,Qt::SolidPattern));
+//     painter.drawEllipse(0,0,size*2,size*2);
+//     painter.drawEllipse(width*6-1,0,size*2,size*2);
+//     painter.drawEllipse(0,height*6-1,size*2,size*2);
+//     painter.drawEllipse(width*6-1,height*6-1,size*2,size*2);
+//     painter.end();
 
-//    //top Right corner
-//    for(int i=width*6-1;i<width*6+size*2-1;i++)
-//        for(int j=0;j<size*2;j++)
-//                picAli->setPixel(i,j,green);
-
-//    //bot left corner
-//    for(int i=0;i<size*2;i++)
-//        for(int j=height*6-1;j<height*6+size*2-1;j++)
-//            picAli->setPixel(i,j,green);
-
-//    //bot right corner
-//    for(int i=width*6-1;i<width*6+size*2-1;i++)
-//        for(int j=height*6-1;j<height*6+size*2-1;j++)
-//            picAli->setPixel(i,j,green);
 
     QSize s(1000,500);
     *picAli=picAli->scaled(s,Qt::KeepAspectRatio,Qt::FastTransformation);
+    bool first=false;
+    int radius;
+    for(int i=0;i<picAli->width();i++)
+    {
+        for(int j=0;j<picAli->height();j++)
+        {
+            if(picAli->pixel(i,j)==black)
+            {
+                first =true;
+                radius=i;
+                break;
+            }
+        }
+        if(first==true)
+            break;
+    }
+
+    int muinus=6;
+    QPainter painter;
+    painter.begin(picAli);
+    painter.setPen(QPen(Qt::white,0,Qt::SolidLine));
+    painter.setBrush(QBrush(Qt::green,Qt::SolidPattern));
+    painter.drawEllipse(0,0,radius*2,radius*2);
+    painter.drawEllipse(picAli->width()-radius*2-muinus,0,radius*2,radius*2);
+    painter.drawEllipse(0,picAli->height()-radius*2-muinus,radius*2,radius*2);
+    painter.drawEllipse(picAli->width()-radius*2-muinus,picAli->height()-radius*2-muinus,radius*2,radius*2);
+    painter.end();
 
     picAli->save("picAli.png");
 }

@@ -284,11 +284,11 @@ void picGen::saveAll()
 
 void picGen::alignment()
 {
-    int size=11;
+    int size=5;
     picAli = new QImage(width*6+size*2,height*6+size*2,QImage::Format_RGBA8888);
-    QRgb green,white;
-    green = qRgba(0,255,0,255);
-    white = qRgba(255,255,255,0);
+//    QRgb green,white;
+//    green = qRgba(0,255,0,255);
+//    white = qRgba(255,255,255,0);
     //set to transparent
     for(int i=0;i<width*6+size*2;i++)
         for(int j=0;j<height*6+size*2;j++)

@@ -13,6 +13,7 @@
 #include <QTextStream>
 #include <QCryptographicHash>
 #include <sstream>
+#include <ctime>
 #include "sharedis.h"
 
 

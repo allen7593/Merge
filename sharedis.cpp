@@ -1,5 +1,5 @@
 #include "sharedis.h"
-
+#include <iostream>
 shareDis::shareDis(QWidget *parent,int seed)
     : QDialog(parent,Qt::FramelessWindowHint)
 {
@@ -89,7 +89,7 @@ void shareDis::setSeed(int seed)
     ossT<<regTime.toStdString();
     time_t rTime;
     ossT>>rTime;
-    int timeD=(time(NULL)-rTime)/300;
+    int timeD=(time(NULL)-rTime)/120;
 
     std::ostringstream oss;
     oss<<seed;
@@ -104,6 +104,7 @@ void shareDis::setSeed(int seed)
 
     std::istringstream iss(setToSeed);
     iss>>seed;
+    std::cout<<seed<<endl;
     p.setKey(seed);
 
 }

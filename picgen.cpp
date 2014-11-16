@@ -1,4 +1,5 @@
 #include "picgen.h"
+#include <random>
 #include <iostream>
 std::string generateRanStr()
 {

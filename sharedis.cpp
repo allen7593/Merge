@@ -8,9 +8,15 @@ shareDis::shareDis(QWidget *parent,QString hashedSeed)
     std::stringstream ss;
     ss<<std::hex<<hashedSeed.toStdString();
     ss>>seed;
-    seed+=time(NULL);
+    seed+=std::time(NULL);
     seed=abs(seed);
     seed%=100000;
+
+
+    time = QTime(0,2,0);
+    QTimer *timer=new QTimer(this);
+    timer->setInterval(1000);
+    timeCount=1000;
 
 
     preWin=parent;
@@ -58,6 +64,8 @@ shareDis::shareDis(QWidget *parent,QString hashedSeed)
     connect(preBut,SIGNAL(clicked()),this,SLOT(goback()));
     connect(verifyEdit,SIGNAL(textChanged(const QString&)),this,SLOT(validateBut(const QString&)));
     connect(verifyBut,SIGNAL(clicked()),this,SLOT(checkForValidity()));
+    connect(timer,SIGNAL(timeout()),this,SLOT(countDown()));
+    timer->start();
 
 
     QHBoxLayout* paddingHL=new QHBoxLayout;
@@ -111,7 +119,7 @@ void shareDis::setSeed(int seed)
         std::ofstream ts2("assetT");
 
         std::ostringstream timeConv;
-        timeConv<<time(NULL);
+        timeConv<<std::time(NULL);
 
         plainText=timeConv.str();
 
@@ -131,7 +139,7 @@ void shareDis::setSeed(int seed)
     ossT<<plainText;
     time_t rTime;
     ossT>>rTime;
-    int timeD=(time(NULL)-rTime)/120;
+    int timeD=(std::time(NULL)-rTime)/120;
 
     std::ostringstream oss;
     oss<<seed;
@@ -188,4 +196,31 @@ void shareDis::checkForValidity()
         //qDebug<<"false";
         QMessageBox::warning(this, tr("Warning"),tr("Invalid code,please try again"),QMessageBox::Ok);
     }
+}
+
+
+void shareDis::countDown()
+{
+
+
+    if(time.minute()==0 && time.second()==0)
+    {
+//        QMessageBox::StandardButton retvel;
+//        retvel=QMessageBox::warning(this,tr("Time out"),tr("You have no time left press Ok to refresh the page!"),QMessageBox::Ok);
+//        if(retvel==QMessageBox::Ok)
+        {
+            //do something
+            this->close();
+            QFile file("stylesheet.qss");
+            file.open(QFile::ReadOnly);
+            QTextStream filetext(&file);
+            QString stylesheet=filetext.readAll();
+            shareDis *newWindow;
+            newWindow=new shareDis(preWin,hexSeed);
+            newWindow->setStyleSheet(stylesheet);
+            //setCenterOfApplication(newWindow);
+            newWindow->show();
+        }
+    }
+    time=time.addSecs(-1);
 }

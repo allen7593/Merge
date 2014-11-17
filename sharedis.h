@@ -16,6 +16,9 @@
 #include <QFile>
 #include <QTextStream>
 #include <fstream>
+#include <QTimer>
+#include <QDateTime>
+#include <ctime>
 #include "picgen.h"
 #include "widget.h"
 #include "aes_ctr.h"
@@ -32,6 +35,7 @@ private slots:
     void goback();
     void validateBut(const QString&);
     void checkForValidity();
+    void countDown();
 private:
 
     QLabel* scanLabel;
@@ -53,6 +57,8 @@ private:
     QWidget* preWin;
     QString hexSeed;
     int seed;
+    QTime time;
+    int timeCount;
 };
 
 #endif // SHAREDIS_H

@@ -15,6 +15,7 @@
 #include <QMessageBox>
 #include <QFile>
 #include <QTextStream>
+#include "rc4crpto.h"
 #include "picgen.h"
 #include "widget.h"
 

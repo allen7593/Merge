@@ -16,6 +16,7 @@
 #include <ctime>
 #include <unistd.h>
 #include "sharedis.h"
+#include "rc4crpto.h"
 
 
 class regDia : public QDialog

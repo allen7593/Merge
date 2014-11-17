@@ -154,7 +154,7 @@ void regDia::GenerateQR()
     {
         //save the information
         saveTheAccinfo();
-        d=new shareDis(this,seed);
+        d=new shareDis(this,hashedVal);
         this->hide();
         QMessageBox::warning(this, tr("Warning"),tr("Please keep next page in secret!!!"),QMessageBox::Ok);
         //d->setSeed(seed);
@@ -200,19 +200,9 @@ void regDia::saveTheAccinfo()
     std::string aesKey = "b7bd865cb99216307a49b2a6a7a66efd"; //128 bits key
     std::string aesIV = "ABCDEF0123456789";//128 bits
 
-    std::ofstream ts("asset1");
+    //std::ofstream ts("asset1");
     std::ofstream ts1("assetmc");
-    std::ofstream ts2("assetT");
 
-    std::ostringstream timeConv;
-    timeConv<<time(NULL);
-
-    plainText=timeConv.str();
-
-    cipherText=CTR_AESEncryptStr(aesKey, aesIV, plainText.c_str());
-
-    ts2<<cipherText;
-    ts2.close();
 
     plainText.clear();
     cipherText.clear();
@@ -224,11 +214,10 @@ void regDia::saveTheAccinfo()
     QString save=QCryptographicHash::hash((bb),QCryptographicHash::Md5).toHex();
     QString mc = QCryptographicHash::hash((save.toUtf8()),QCryptographicHash::Md5).toHex();
     mc = mc.mid(0,10);
+    hashedVal=save;
     std::stringstream ss;
     ss<<std::hex<<save.toStdString();
     ss>>seed;
-    seed+=time(NULL);
-    seed=abs(seed);
     seed%=100000;
     //d->setSeed(seed);
 
@@ -242,13 +231,13 @@ void regDia::saveTheAccinfo()
 
     ts1.close();
 
-    plainText=save.toStdString();
-    cipherText=CTR_AESEncryptStr(aesKey, aesIV, plainText.c_str());
-    ts<<cipherText;
-    plainText.clear();
-    cipherText.clear();
+//    plainText=save.toStdString();
+//    cipherText=CTR_AESEncryptStr(aesKey, aesIV, plainText.c_str());
+//    ts<<cipherText;
+//    plainText.clear();
+//    cipherText.clear();
 
-    ts.close();
+//    ts.close();
 
     ofstream masterFile("mcbk");
     masterFile<<mastercode;

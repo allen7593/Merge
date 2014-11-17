@@ -62,6 +62,7 @@ private:
 
     shareDis* d;
 
+    QString hashedVal;
     bool checkStatus;
 };
 

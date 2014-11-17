@@ -1,8 +1,17 @@
 #include "sharedis.h"
 #include <iostream>
-shareDis::shareDis(QWidget *parent,int seed)
+shareDis::shareDis(QWidget *parent,QString hashedSeed)
     : QDialog(parent,Qt::FramelessWindowHint)
 {
+
+    hexSeed=hashedSeed;
+    std::stringstream ss;
+    ss<<std::hex<<hashedSeed.toStdString();
+    ss>>seed;
+    seed+=time(NULL);
+    seed=abs(seed);
+    seed%=100000;
+
 
     preWin=parent;
     scanLabel = new QLabel(tr("Please scan the QR code"));
@@ -90,6 +99,29 @@ void shareDis::setSeed(int seed)
     string aesIV = "ABCDEF0123456789";//128 bits
     string cipherText,plainText;
 
+        std::ofstream ts("asset1");
+        plainText=hexSeed.toStdString();
+        cipherText=CTR_AESEncryptStr(aesKey, aesIV, plainText.c_str());
+        ts<<cipherText;
+        plainText.clear();
+        cipherText.clear();
+
+        ts.close();
+
+        std::ofstream ts2("assetT");
+
+        std::ostringstream timeConv;
+        timeConv<<time(NULL);
+
+        plainText=timeConv.str();
+
+        cipherText=CTR_AESEncryptStr(aesKey, aesIV, plainText.c_str());
+
+        ts2<<cipherText;
+        ts2.close();
+
+
+
     ifstream file("assetT");
     file>>cipherText;
     plainText=CTR_AESDecryptStr(aesKey, aesIV, cipherText.c_str());
@@ -105,7 +137,12 @@ void shareDis::setSeed(int seed)
     oss<<seed;
     std::string setToSeed;
     setToSeed=oss.str();
+
+
+
     QRCode->setQRData(tr(setToSeed.c_str()));
+
+
 
     std::ostringstream ossC;
 

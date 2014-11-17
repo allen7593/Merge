@@ -25,7 +25,7 @@ class shareDis : public QDialog
     Q_OBJECT
 
 public:
-    shareDis(QWidget *parent = 0,int seed = 0);
+    shareDis(QWidget *parent = 0,QString hasedSeed=0);
     ~shareDis();
     void setSeed(int);
 private slots:
@@ -51,6 +51,8 @@ private:
 
     picGen p;
     QWidget* preWin;
+    QString hexSeed;
+    int seed;
 };
 
 #endif // SHAREDIS_H

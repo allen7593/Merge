@@ -41,6 +41,8 @@ private:
     QLabel* scanLabel;
     QLabel* QRLabel;
     QLabel* share2;
+    QLabel* timeLabel;
+    QLabel* timeWarning;
     QImage* s2;
 
     QLineEdit* verifyEdit;

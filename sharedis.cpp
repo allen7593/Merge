@@ -24,6 +24,16 @@ shareDis::shareDis(QWidget *parent,QString hashedSeed)
     QRLabel = new QLabel;
 
     share2=new QLabel;
+    QFont font;
+    font.setPixelSize(20);
+
+
+
+    timeLabel=new QLabel();
+    timeWarning=new QLabel();
+    timeLabel->setFont(font);
+    timeWarning->setFont(font);
+    timeWarning->setStyleSheet("color:red");
 
     //s2 = new QImage(48*6,24*6,QImage::Format_RGBA8888);
     verifyEdit = new QLineEdit;
@@ -55,6 +65,8 @@ shareDis::shareDis(QWidget *parent,QString hashedSeed)
     buttonLayout->addWidget(verifyBut);
 
     leftLayout->addLayout(buttonLayout);
+    leftLayout->addWidget(timeLabel);
+    leftLayout->addWidget(timeWarning);
     leftLayout->addStretch();
 
     mainLayout->addLayout(leftLayout);
@@ -83,7 +95,7 @@ shareDis::shareDis(QWidget *parent,QString hashedSeed)
     setLayout(paddingVL);
     setWindowFlags( ( (this->windowFlags() | Qt::CustomizeWindowHint)& ~Qt::WindowCloseButtonHint) );
 
-    setMinimumSize(1150,550);
+    setMinimumSize(1250,550);
 }
 
 shareDis::~shareDis()
@@ -107,26 +119,26 @@ void shareDis::setSeed(int seed)
     string aesIV = "ABCDEF0123456789";//128 bits
     string cipherText,plainText;
 
-        std::ofstream ts("asset1");
-        plainText=hexSeed.toStdString();
-        cipherText=CTR_AESEncryptStr(aesKey, aesIV, plainText.c_str());
-        ts<<cipherText;
-        plainText.clear();
-        cipherText.clear();
+    std::ofstream ts("asset1");
+    plainText=hexSeed.toStdString();
+    cipherText=CTR_AESEncryptStr(aesKey, aesIV, plainText.c_str());
+    ts<<cipherText;
+    plainText.clear();
+    cipherText.clear();
 
-        ts.close();
+    ts.close();
 
-        std::ofstream ts2("assetT");
+    std::ofstream ts2("assetT");
 
-        std::ostringstream timeConv;
-        timeConv<<std::time(NULL);
+    std::ostringstream timeConv;
+    timeConv<<std::time(NULL);
 
-        plainText=timeConv.str();
+    plainText=timeConv.str();
 
-        cipherText=CTR_AESEncryptStr(aesKey, aesIV, plainText.c_str());
+    cipherText=CTR_AESEncryptStr(aesKey, aesIV, plainText.c_str());
 
-        ts2<<cipherText;
-        ts2.close();
+    ts2<<cipherText;
+    ts2.close();
 
 
 
@@ -201,10 +213,18 @@ void shareDis::checkForValidity()
 
 void shareDis::countDown()
 {
+    QString time_Display;
 
 
-    if(time.minute()==0 && time.second()==0)
+    time_Display=time.toString("hh:mm:ss");
+    timeLabel->setText(time_Display);
+    if(time.minute()==1 && time.second()==0)
+        timeWarning->setText(tr("You have 1 minute left"));
+    else if(time.minute()==0 && time.second()==30)
+        timeWarning->setText(tr("You have 30 seconds left"));
+    else if(time.minute()==0 && time.second()==0)
     {
+
 //        QMessageBox::StandardButton retvel;
 //        retvel=QMessageBox::warning(this,tr("Time out"),tr("You have no time left press Ok to refresh the page!"),QMessageBox::Ok);
 //        if(retvel==QMessageBox::Ok)

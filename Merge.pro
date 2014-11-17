@@ -36,4 +36,5 @@ HEADERS  += \
     sharedis.h \
     settocenter.h \
     aes_ctr.h
-LIBS += -lqrencode
+LIBS += -lqrencode\
+        -lcryptopp

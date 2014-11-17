@@ -196,34 +196,26 @@ void regDia::checkAcc()
 
 void regDia::saveTheAccinfo()
 {
-    QFile file("asset1");
-    QFile file1("assetmc");
-    QFile file2("assetT");
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
-        // error processing here
-        QMessageBox::warning(this, tr("Warning"),tr("File writting error"),QMessageBox::Ok);
-        return;
+    std::string plainText,cipherText;
+    std::string aesKey = "b7bd865cb99216307a49b2a6a7a66efd"; //128 bits key
+    std::string aesIV = "ABCDEF0123456789";//128 bits
 
-    }
-    if (!file1.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
-        // error processing here
-        QMessageBox::warning(this, tr("Warning"),tr("File writting error"),QMessageBox::Ok);
-        return;
+    std::ofstream ts("asset1");
+    std::ofstream ts1("assetmc");
+    std::ofstream ts2("assetT");
 
-    }
-    if (!file2.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
-        // error processing here
-        QMessageBox::warning(this, tr("Warning"),tr("File writting error"),QMessageBox::Ok);
-        return;
+    std::ostringstream timeConv;
+    timeConv<<time(NULL);
 
-    }
+    plainText=timeConv.str();
 
-    QTextStream ts(&file);
-    QTextStream ts1(&file1);
-    QTextStream ts2(&file2);
+    cipherText=CTR_AESEncryptStr(aesKey, aesIV, plainText.c_str());
 
-    ts2<<time(NULL);
-    file2.close();
+    ts2<<cipherText;
+    ts2.close();
+
+    plainText.clear();
+    cipherText.clear();
 
 
     QByteArray bb;
@@ -237,9 +229,23 @@ void regDia::saveTheAccinfo()
     ss>>seed;
     seed%=100000;
     //d->setSeed(seed);
-    ts1<<mc;
-    ts<<save;
-    file.close();
-    file1.close();
+
+
+    plainText=mc.toStdString();
+    cipherText=CTR_AESEncryptStr(aesKey, aesIV, plainText.c_str());
+    ts1<<cipherText;
+    plainText.clear();
+    cipherText.clear();
+
+    ts1.close();
+
+    plainText=save.toStdString();
+    cipherText=CTR_AESEncryptStr(aesKey, aesIV, plainText.c_str());
+    ts<<cipherText;
+    plainText.clear();
+    cipherText.clear();
+
+    ts.close();
+
     clearAll();
 }

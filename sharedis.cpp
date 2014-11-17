@@ -74,7 +74,7 @@ shareDis::~shareDis()
 }
 
 void shareDis::setSeed(int seed)
-{
+{/*
     QFile file("assetT");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Truncate)) {
         // error processing here
@@ -84,9 +84,19 @@ void shareDis::setSeed(int seed)
     }
     QTextStream ts(&file);
     QString regTime;
-    regTime=ts.readAll();
+    regTime=ts.readAll();*/
+
+    string aesKey = "b7bd865cb99216307a49b2a6a7a66efd"; //128 bits key
+    string aesIV = "ABCDEF0123456789";//128 bits
+    string cipherText,plainText;
+
+    ifstream file("assetT");
+    file>>cipherText;
+    plainText=CTR_AESDecryptStr(aesKey, aesIV, cipherText.c_str());
+
+
     std::stringstream ossT(std::stringstream::out|std::stringstream::in);
-    ossT<<regTime.toStdString();
+    ossT<<plainText;
     time_t rTime;
     ossT>>rTime;
     int timeD=(time(NULL)-rTime)/120;
@@ -104,7 +114,7 @@ void shareDis::setSeed(int seed)
 
     std::istringstream iss(setToSeed);
     iss>>seed;
-    std::cout<<seed<<endl;
+    //std::cout<<seed<<endl;
     p.setKey(seed);
 
 }

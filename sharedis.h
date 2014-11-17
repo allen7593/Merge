@@ -15,9 +15,10 @@
 #include <QMessageBox>
 #include <QFile>
 #include <QTextStream>
-#include "rc4crpto.h"
+#include <fstream>
 #include "picgen.h"
 #include "widget.h"
+#include "aes_ctr.h"
 
 class shareDis : public QDialog
 {

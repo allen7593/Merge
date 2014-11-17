@@ -15,8 +15,9 @@
 #include <sstream>
 #include <ctime>
 #include <unistd.h>
+#include <fstream>
 #include "sharedis.h"
-#include "rc4crpto.h"
+#include "aes_ctr.h"
 
 
 class regDia : public QDialog

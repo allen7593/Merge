@@ -74,7 +74,7 @@ QString picGen::getHashedSecret()
 {
     QString hashedVal;
     QByteArray bb(secretStr.c_str());
-    hashedVal=QCryptographicHash::hash((bb),QCryptographicHash::Sha1).toHex();
+    hashedVal=QCryptographicHash::hash((bb),QCryptographicHash::Md5).toHex();
     return hashedVal;
 }
 

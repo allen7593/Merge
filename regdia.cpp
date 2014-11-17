@@ -221,17 +221,20 @@ void regDia::saveTheAccinfo()
     QByteArray bb;
     bb.append(usrNameEdit->text());
     bb.append(passwordEdit->text());
-    QString save=QCryptographicHash::hash((bb),QCryptographicHash::Sha1).toHex();
-    QString mc = QCryptographicHash::hash((save.toUtf8()),QCryptographicHash::Sha1).toHex();
+    QString save=QCryptographicHash::hash((bb),QCryptographicHash::Md5).toHex();
+    QString mc = QCryptographicHash::hash((save.toUtf8()),QCryptographicHash::Md5).toHex();
     mc = mc.mid(0,10);
     std::stringstream ss;
     ss<<std::hex<<save.toStdString();
     ss>>seed;
+    seed+=time(NULL);
+    seed=abs(seed);
     seed%=100000;
     //d->setSeed(seed);
 
 
-    plainText=mc.toStdString();
+    string mastercode;
+    mastercode=plainText=mc.toStdString();
     cipherText=CTR_AESEncryptStr(aesKey, aesIV, plainText.c_str());
     ts1<<cipherText;
     plainText.clear();
@@ -246,6 +249,19 @@ void regDia::saveTheAccinfo()
     cipherText.clear();
 
     ts.close();
+
+    ofstream masterFile("mcbk");
+    masterFile<<mastercode;
+
+    masterFile.close();
+
+//    string email;
+//    email.append("echo \"Your master code is: \"");
+//    email.append(mastercode);
+//    email.append(" | mail -s \"Master code from Overlapit\" ");
+//    email.append(emailEdit->text().toStdString());
+
+//    system(email.c_str());
 
     clearAll();
 }

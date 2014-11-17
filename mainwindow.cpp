@@ -189,7 +189,7 @@ void MainWindow::showLogin()
 
         aa.append(usrNameEdit->text());
         aa.append(passWordEdit->text());
-        QString hased=QCryptographicHash::hash((aa),QCryptographicHash::Sha1).toHex();
+        QString hased=QCryptographicHash::hash((aa),QCryptographicHash::Md5).toHex();
         if(hased.toStdString()==plainText)
         {
             this->hide();

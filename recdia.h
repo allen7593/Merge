@@ -11,6 +11,8 @@
 #include <QTextStream>
 #include <QFile>
 #include <unistd.h>
+#include <fstream>
+#include "aes_ctr.h"
 
 class recDia : public QDialog
 {

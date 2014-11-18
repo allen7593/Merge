@@ -61,6 +61,7 @@ private:
     int seed;
     QTime time;
     int timeCount;
+    QTimer *timer;
 };
 
 #endif // SHAREDIS_H

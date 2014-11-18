@@ -8,13 +8,13 @@ shareDis::shareDis(QWidget *parent,QString hashedSeed)
     std::stringstream ss;
     ss<<std::hex<<hashedSeed.toStdString();
     ss>>seed;
-    seed+=std::time(NULL);
-    seed=abs(seed);
-    seed%=100000;
+//    seed+=std::time(NULL);
+//    seed=abs(seed);
+    //seed%=100000;
 
 
     time = QTime(0,2,0);
-    QTimer *timer=new QTimer(this);
+    timer=new QTimer(this);
     timer->setInterval(1000);
     timeCount=1000;
 
@@ -119,6 +119,7 @@ void shareDis::setSeed(int seed)
     string aesIV = "ABCDEF0123456789";//128 bits
     string cipherText,plainText;
 
+    //save hashed seed and encrypt it
     std::ofstream ts("asset1");
     plainText=hexSeed.toStdString();
     cipherText=CTR_AESEncryptStr(aesKey, aesIV, plainText.c_str());
@@ -127,6 +128,9 @@ void shareDis::setSeed(int seed)
     cipherText.clear();
 
     ts.close();
+    //std::cout<<hexSeed.toStdString()<<std::endl;
+
+    //save current register time
 
     std::ofstream ts2("assetT");
 
@@ -141,7 +145,7 @@ void shareDis::setSeed(int seed)
     ts2.close();
 
 
-
+    //read the registrer time
     ifstream file("assetT");
     file>>cipherText;
     plainText=CTR_AESDecryptStr(aesKey, aesIV, cipherText.c_str());
@@ -150,7 +154,17 @@ void shareDis::setSeed(int seed)
     std::stringstream ossT(std::stringstream::out|std::stringstream::in);
     ossT<<plainText;
     time_t rTime;
+
+
     ossT>>rTime;
+
+
+    //compute the seed
+    seed+=rTime;
+    seed=abs(seed);
+    seed%=100000;
+    //cout<<seed<<endl;
+    //get time difference
     int timeD=(std::time(NULL)-rTime)/120;
 
     std::ostringstream oss;
@@ -164,6 +178,7 @@ void shareDis::setSeed(int seed)
 
 
 
+    //compute final seed
     std::ostringstream ossC;
 
     ossC<<timeD;
@@ -180,6 +195,7 @@ void shareDis::goback()
 {
     this->hide();
     preWin->show();
+    timer->stop();
 
 }
 

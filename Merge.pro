@@ -40,3 +40,5 @@ HEADERS  += \
     rexh.h
 LIBS += -lqrencode\
         -lcryptopp
+
+FORMS +=

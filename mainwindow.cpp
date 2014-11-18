@@ -193,7 +193,7 @@ void MainWindow::showLogin()
         if(hased.toStdString()==plainText)
         {
             this->hide();
-            lDia = new LoginForm(this);
+            lDia = new LoginForm(this,usrNameEdit->text());
             lDia->show();
         }
         else

@@ -16,6 +16,7 @@
 #include <ctime>
 #include <unistd.h>
 #include <fstream>
+#include <iostream>
 #include "sharedis.h"
 #include "aes_ctr.h"
 #include "rexh.h"
@@ -27,6 +28,7 @@ class regDia : public QDialog
 
 public:
     regDia(QMainWindow *parent = 0);
+    regDia(QWidget *parent = 0, QString accName="");
     ~regDia();
 
 private slots:
@@ -59,10 +61,11 @@ private:
     QPushButton* previousBut;
 
     QMainWindow* preWin;
+    QWidget* preDia;
     QPushButton* closeBut;
 
     shareDis* d;
-
+    QString accName;
     QString hashedVal;
     bool checkStatus;
 };

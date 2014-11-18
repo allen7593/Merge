@@ -209,7 +209,7 @@ void shareDis::checkForValidity()
     QString secretH;
     QString hashedVal;
     QByteArray bb=verifyEdit->text().toUtf8();
-    hashedVal=QCryptographicHash::hash((bb),QCryptographicHash::Sha1).toHex();
+    hashedVal=QCryptographicHash::hash((bb),QCryptographicHash::Md5).toHex();
     secretH=p.getHashedSecret();
     if(hashedVal==secretH)
     {

@@ -1,7 +1,6 @@
 #ifndef RECDIA_H
 #define RECDIA_H
 
-#include "warningbox.h"
 #include <QDialog>
 #include <QLabel>
 #include <QLineEdit>
@@ -37,7 +36,6 @@ private:
     QPushButton* previousBut;
     QMainWindow* preWin;
 
-    warningBox* wBox;
     QString masterKey;
     QMessageBox mBox;
 

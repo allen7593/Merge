@@ -18,6 +18,7 @@
 #include <fstream>
 #include "sharedis.h"
 #include "aes_ctr.h"
+#include "rexh.h"
 
 
 class regDia : public QDialog

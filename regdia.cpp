@@ -184,6 +184,13 @@ void regDia::checkAcc()
         QMessageBox::warning(this, tr("Warning"),tr("Password are not the same"),QMessageBox::Ok);
         return;
     }
+    char email[256];
+    strcpy(email,emailEdit->text().toStdString().c_str());
+    if(email_is_valid(email)==REG_NOMATCH)
+    {
+        QMessageBox::warning(this, tr("Warning"),tr("Email is invalid"),QMessageBox::Ok);
+        return;
+    }
     if (0==access("asset1", 0)) {
         // error processing here
         QMessageBox::warning(this, tr("Warning"),tr("Account has already exist."),QMessageBox::Ok);

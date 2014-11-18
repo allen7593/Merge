@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     rangen.cpp \
     sharedis.cpp \
     settocenter.cpp \
-    aes_ctr.cpp
+    aes_ctr.cpp \
+    rexh.cpp
 
 HEADERS  += \
     mainwindow.h \
@@ -35,6 +36,7 @@ HEADERS  += \
     rangen.h \
     sharedis.h \
     settocenter.h \
-    aes_ctr.h
+    aes_ctr.h \
+    rexh.h
 LIBS += -lqrencode\
         -lcryptopp
